@@ -13,6 +13,7 @@ namespace DAO;
  *
  * @author eric
  */
-class GameDAO extends \SimpleDAO\DAO{
+class GameDAO extends \SimpleDAO\DAO
+{
     //put your code here
 }

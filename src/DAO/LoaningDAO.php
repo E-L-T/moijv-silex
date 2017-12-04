@@ -13,6 +13,7 @@ namespace DAO;
  *
  * @author eric
  */
-class LoaningDAO extends \SimpleDAO\DAO{
+class LoaningDAO extends \SimpleDAO\DAO
+{
     //put your code here
 }

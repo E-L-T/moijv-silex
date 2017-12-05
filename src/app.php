@@ -7,8 +7,9 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use App\CustomApp;
 
-$app = new Application();
+$app = new CustomApp();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new TwigServiceProvider());
@@ -49,6 +50,26 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 //on crée un firewall pour notre site (front-office)
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => [
+        'admin' => array(
+            'pattern' => '^/admin/',
+            'form' => array(
+                'login_path' => '/loginadmin',
+                'check_path' => '/admin/login_check',
+                'always_use_default_target_path' => true,
+                'default_target_path' => '/admin/dashboard'
+                ),
+            'logout' => array('logout_path' => '/admin/logoutadmin', 'invalidate_session' => true),
+            //'http' => true, //connexion classique, http
+            'anonymous' => false,
+            'users' => function () use ($app) {
+                return $app['admins.dao'];
+             },
+            //'form_login' => array(
+             //   'default_target_path' => 'admin_dashboard',
+            //),  
+               
+                
+        ),
         'front' => array(
             'pattern' => '^/', //ce firewall concerne ttes les uri
             'http' => true, //connexion classique, http
@@ -58,14 +79,6 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'users' => function () use ($app) { //quel est l'objet qui permet de savoir quels sont les utilisateurs dans la bdd. c'est notre dao
                 return $app['users.dao']; //equivalent de return new UserProvider($app['db'])
             }
-        ),
-        'admin' => array(
-            'pattern' => '^/admin/',
-            'form' => array('login_path' => '/loginadmin', 'check_path' => '/admin/login_check'),
-            'http' => true, //connexion classique, http
-            'users' => function () use ($app) {
-                return $app['admins.dao'];
-             }
         ),
     ]
 ));

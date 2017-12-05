@@ -12,10 +12,17 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
  *
  * @author eric
  */
+
 class AdminDAO extends UserDAO
 {
     protected $tablename = 'user';
     //put your code here
+    
+    public function __construct (\PDO $db) 
+    {
+        parent::__construct($db, 'user');
+        $this->entityClassName = '\Entity\User';
+    }
     public function loadUserByUsername($username)
     {
         //select * from user where username = ? LIMIT 1 (et le résultat est converti en entité)

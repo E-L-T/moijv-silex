@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Entity;
 
 /**
@@ -8,35 +7,38 @@ namespace Entity;
  *
  * @author Etudiant
  */
+class Category
+{
 
-class Category {
-    
     /**
      * id of the category
      * @var type 
      */
-    
     private $id;
-    
+
     /**
-     *name of the category
+     * name of the category
      * @var type 
      */
     private $name;
-    
-    public function getId() {
+
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function setId(type $id) {
+    public function setId(type $id)
+    {
         $this->id = $id;
     }
 
-    public function setName(type $name) {
+    public function setName(type $name)
+    {
         $this->name = $name;
     }
 

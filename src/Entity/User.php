@@ -52,7 +52,7 @@ class User implements UserInterface
      * list of the user's roles
      * @var array
      */
-    private $roles;
+    private $role;
 
     /**
      * the salt used to encode the user's password
@@ -125,27 +125,30 @@ class User implements UserInterface
         $this->setPassword(NULL); // pour rendre invisible le password.)
     }
 
+    public function getRole()
+    {//pour renvoyer une cc par utilisateur
+        return $this->role;
+    }
+    
     public function getRoles()
     {//pour renvoyer un tableau de roles par utilisateur
-        return $this->roles;
+        return explode('|', $this->role);
     }
 
-    public function setRoles($roles)
+
+    public function setRole($role)
     {
-        if (is_string($roles)) {
-            $roles = explode('|', $roles);
-        }
-        $this->roles = $roles;
+        $this->role = $role;
     }
 
     public function getSalt()
     {
-        
+        return $this->salt;
     }
 
-    public function setSalt(type $salt)
+    public function setSalt($salt)
     {
         $this->salt = $salt;
     }
-
+    
 }

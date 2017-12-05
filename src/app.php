@@ -8,7 +8,6 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 
-
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
@@ -55,10 +54,19 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'http' => true, //connexion classique, http
             'anonymous' => true, //les connexions anonymes sont autorisées
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
+            'logout' => array('logout_path' => '/logout', 'invalidate_session' => true),
             'users' => function () use ($app) { //quel est l'objet qui permet de savoir quels sont les utilisateurs dans la bdd. c'est notre dao
                 return $app['users.dao']; //equivalent de return new UserProvider($app['db'])
             }
-        )
+        ),
+        'admin' => array(
+            'pattern' => '^/admin/',
+            'form' => array('login_path' => '/loginadmin', 'check_path' => '/admin/login_check'),
+            'http' => true, //connexion classique, http
+            'users' => function () use ($app) {
+                return $app['admins.dao'];
+             }
+        ),
     ]
 ));
 
@@ -75,10 +83,15 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
             ]
         ]
     ]
-    ));
+));
 $app->register(new FormServiceProvider());
 
 $app->register(new ValidatorServiceProvider());
 
+$app['admins.dao'] = function ($app) {
+    
+    return new DAO\AdminDAO($app['pdo']);
+    
+};
 
 return $app;
